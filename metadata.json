@@ -1,0 +1,5 @@
+{
+  "name": "Controle de Equipamentos",
+  "description": "Sistema profissional de gestão e controle de equipamentos com sincronização em nuvem e relatórios PDF.",
+  "requestFramePermissions": ["camera"]
+}
