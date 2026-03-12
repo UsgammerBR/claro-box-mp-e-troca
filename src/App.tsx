@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, useRef, useMemo } from 'react';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence } from 'framer-motion';
 import { jsPDF } from 'jspdf';
 
 // Components
@@ -8,7 +8,6 @@ import { CameraModal } from './components/CameraModal';
 import { Modal } from './components/Modal';
 import { EquipmentSection } from './components/EquipmentSection';
 import { PhotoGalleryModal } from './components/PhotoGalleryModal';
-import { CountBadge } from './components/CountBadge';
 import { 
     CustomMenuIcon, LoadingBoxIcon, IconPlus, IconMinus, IconUndo, IconSearch, IconX, IconChevronLeft, IconChevronRight,
     IconExport, IconCalendar, IconBell, IconCameraLens, IconCloud, IconCopy, IconTrash, IconDownload, IconCamera, IconGallery,
@@ -165,21 +164,18 @@ const AppContent = () => {
     setCameraTarget(null);
   };
 
-  if (isLoading) return <div className="fixed inset-0 flex flex-col items-center justify-center bg-slate-50 z-[100]"><LoadingBoxIcon/><p className="mt-4 font-black uppercase tracking-widest text-[10px] text-slate-400 animate-pulse">Iniciando Controle...</p></div>;
+  if (isLoading) return <div className="fixed inset-0 flex flex-col items-center justify-center bg-slate-50 z-[100] sm:max-w-[480px] sm:left-1/2 sm:-translate-x-1/2"><LoadingBoxIcon/><p className="mt-4 font-black uppercase tracking-widest text-[10px] text-slate-400 animate-pulse">Iniciando Controle...</p></div>;
 
   return (
     <div className="flex flex-col min-h-screen relative w-full overflow-x-hidden bg-slate-50">
-      <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onMenuClick={setActiveModal} userProfile={userProfile} isChristmas={isChristmas} />
-      
-      <header className="sticky top-0 z-30 bg-white/70 backdrop-blur-xl border-b border-slate-200 px-4 pt-12 pb-4">
+      <div className="flex-1 flex flex-col w-full max-w-[480px] mx-auto bg-white shadow-xl min-h-screen relative">
+        <SideMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} onMenuClick={setActiveModal} userProfile={userProfile} isChristmas={isChristmas} />
+        
+        <header className="sticky top-0 z-30 bg-white/70 backdrop-blur-xl border-b border-slate-200 px-4 pt-12 pb-4">
         <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
                 <div onClick={() => setIsMenuOpen(true)} className="active:scale-95 transition-all cursor-pointer">
-                    {userProfile.profileImage ? (
-                        <div className="w-12 h-12 rounded-full border-2 border-slate-200 overflow-hidden shadow-sm">
-                            <img src={userProfile.profileImage} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                        </div>
-                    ) : <CustomMenuIcon className="w-12 h-12" isChristmas={isChristmas}/>}
+                    <CustomMenuIcon className="w-12 h-12" />
                 </div>
                 <div className="flex flex-col">
                     <h1 className="text-sm font-black text-slate-900 uppercase tracking-tighter">Controle</h1>
@@ -203,11 +199,15 @@ const AppContent = () => {
         <div className="flex gap-2 overflow-x-auto no-scrollbar py-3">
             {CATEGORIES.map(cat => {
                 const Icon = getCategoryIcon(cat);
+                const claroBoxImg = localStorage.getItem('claro_box_icon');
                 return (
                     <button key={cat} onClick={() => setActiveCategory(cat)} className={`flex flex-col items-center gap-1.5 min-w-[60px] p-2 rounded-[1.2rem] transition-all ${activeCategory === cat ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-100 text-slate-400'}`}>
-                        <Icon className="w-4 h-4"/>
+                        {cat === EquipmentCategory.BOX && claroBoxImg ? (
+                            <img src={claroBoxImg} className="w-4 h-4 object-cover rounded-full" alt="Box" />
+                        ) : (
+                            <Icon className="w-4 h-4"/>
+                        )}
                         <span className="text-[6px] font-black uppercase tracking-[1px]">{cat}</span>
-                        <CountBadge count={appData[formattedDate]?.[cat]?.filter(isItemActive).length || 0} />
                     </button>
                 );
             })}
@@ -230,14 +230,19 @@ const AppContent = () => {
           />
       </main>
 
-      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-white/90 border-t border-slate-200 p-4 pb-10 shadow-xl backdrop-blur-3xl max-w-[480px] mx-auto">
+      <footer className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full z-40 bg-white/90 border-t border-slate-200 p-4 pb-10 shadow-xl backdrop-blur-3xl max-w-[480px]">
           <div className="flex items-center justify-between">
               <div className="flex gap-4 flex-1">
                   {CATEGORIES.map(cat => {
                       const Icon = getCategoryIcon(cat);
+                      const claroBoxImg = localStorage.getItem('claro_box_icon');
                       return (
                         <div key={cat} className={`flex flex-col items-center ${activeCategory === cat ? 'text-blue-600' : 'text-slate-300'}`}>
-                            <Icon className="w-4 h-4 mb-1"/>
+                            {cat === EquipmentCategory.BOX && claroBoxImg ? (
+                                <img src={claroBoxImg} className="w-4 h-4 mb-1 object-cover rounded-full" alt="Box" />
+                            ) : (
+                                <Icon className="w-4 h-4 mb-1"/>
+                            )}
                             <span className="text-[10px] font-black">{(currentDayData[cat] || []).filter(isItemActive).length}</span>
                         </div>
                       );
@@ -291,6 +296,7 @@ const AppContent = () => {
             </Modal>
         )}
       </AnimatePresence>
+      </div>
     </div>
   );
 };

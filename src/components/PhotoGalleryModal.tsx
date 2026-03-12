@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { IconX, IconDownload, IconTrash } from './icons';
 import { EquipmentItem } from '../types';
 
@@ -10,7 +10,7 @@ interface PhotoGalleryModalProps {
 
 export const PhotoGalleryModal = ({ item, onClose }: PhotoGalleryModalProps) => {
     return (
-        <div className="fixed inset-0 z-[110] flex flex-col bg-slate-900">
+        <div className="fixed inset-0 z-[110] flex flex-col bg-slate-900 sm:max-w-[480px] sm:left-1/2 sm:-translate-x-1/2">
             <div className="p-6 flex justify-between items-center text-white">
                 <div className="flex flex-col">
                     <span className="font-black uppercase tracking-widest text-[10px]">Galeria de Fotos</span>

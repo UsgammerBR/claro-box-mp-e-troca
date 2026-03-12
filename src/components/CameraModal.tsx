@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { IconX, IconCamera, IconGallery } from './icons';
 
 interface CameraModalProps {
@@ -40,7 +40,7 @@ export const CameraModal = ({ target, onClose, onCapture }: CameraModalProps) =>
     };
 
     return (
-        <div className="fixed inset-0 bg-black z-[100] flex flex-col">
+        <div className="fixed inset-0 bg-black z-[100] flex flex-col sm:max-w-[480px] sm:left-1/2 sm:-translate-x-1/2">
             <div className="p-6 flex justify-between items-center text-white">
                 <span className="font-black uppercase tracking-widest text-xs">Câmera</span>
                 <button onClick={onClose}><IconX className="w-6 h-6"/></button>

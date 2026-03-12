@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { IconTrash, IconCamera, IconGallery, IconPlus } from './icons';
 import { EquipmentCategory, EquipmentItem } from '../types';
 import { isItemActive } from '../utils';
@@ -41,16 +41,20 @@ export const EquipmentSection = ({
                         exit={{ opacity: 0, scale: 0.9 }}
                         className={`bg-white p-4 rounded-[2rem] border border-slate-100 shadow-sm flex items-center gap-4 ${deleteMode && selectedForDelete.includes(item.id) ? 'border-red-500 bg-red-50' : ''}`}
                     >
-                        <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center font-black text-slate-300 text-xs">
-                            {index + 1}
+                        <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center font-black text-slate-300 text-xs overflow-hidden">
+                            {category === EquipmentCategory.BOX && localStorage.getItem('claro_box_icon') ? (
+                                <img src={localStorage.getItem('claro_box_icon')!} className="w-full h-full object-cover" alt="Box" />
+                            ) : (
+                                index + 1
+                            )}
                         </div>
                         
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                             <input 
                                 value={item.serial}
                                 onChange={(e) => onUpdate({ ...item, serial: e.target.value })}
                                 placeholder="Serial / QR Code"
-                                className="w-full font-black text-sm text-slate-900 placeholder:text-slate-200 focus:outline-none"
+                                className="w-full font-black text-sm text-slate-900 placeholder:text-slate-200 focus:outline-none truncate"
                             />
                         </div>
 

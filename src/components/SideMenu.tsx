@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { IconX, IconCalendar, IconBell, IconCloud, IconExport, IconTrash } from './icons';
 import { UserProfile } from '../types';
 
@@ -27,20 +27,22 @@ export const SideMenu = ({ isOpen, onClose, onMenuClick, userProfile, isChristma
                         initial={{ x: '-100%' }}
                         animate={{ x: 0 }}
                         exit={{ x: '-100%' }}
-                        className="fixed top-0 left-0 bottom-0 w-72 bg-white z-[60] shadow-2xl flex flex-col"
+                        className="fixed top-0 left-0 bottom-0 w-[80%] max-w-[300px] bg-white z-[60] shadow-2xl flex flex-col sm:left-[calc(50%-240px)]"
                     >
                         <div className="p-8 bg-slate-50 border-b border-slate-100">
                             <div className="flex items-center gap-4 mb-6">
                                 {userProfile.profileImage ? (
-                                    <img src={userProfile.profileImage} className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md" referrerPolicy="no-referrer" />
+                                    <img src={userProfile.profileImage} className="w-16 h-16 rounded-full flex-shrink-0 object-cover border-2 border-white shadow-md" referrerPolicy="no-referrer" />
+                                ) : localStorage.getItem('claro_box_icon') ? (
+                                    <img src={localStorage.getItem('claro_box_icon')!} className="w-16 h-16 rounded-full flex-shrink-0 object-cover border-2 border-white shadow-md" alt="Profile" />
                                 ) : (
-                                    <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-2xl">
+                                    <div className="w-16 h-16 rounded-full flex-shrink-0 bg-blue-600 flex items-center justify-center text-white font-black text-2xl">
                                         {userProfile.name[0]}
                                     </div>
                                 )}
-                                <div>
-                                    <h2 className="font-black text-slate-900">{userProfile.name}</h2>
-                                    <p className="text-[10px] text-slate-400 uppercase tracking-widest">{userProfile.email}</p>
+                                <div className="min-w-0">
+                                    <h2 className="font-black text-slate-900 truncate">{userProfile.name}</h2>
+                                    <p className="text-[10px] text-slate-400 uppercase tracking-widest truncate">{userProfile.email}</p>
                                 </div>
                             </div>
                         </div>
